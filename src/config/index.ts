@@ -6,7 +6,7 @@ const {
     PORT = 8000,
     SECRET_KEY, CLOUDINARY_CLOUD_NAME,
     CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET,
-    AdminEmail,AdminPassword
+    AdminEmail, AdminPassword, API_KEY
 } = process.env;
 
 interface ICONFIG {
@@ -16,7 +16,8 @@ interface ICONFIG {
     CLOUDINARY_API_KEY: string | undefined,
     CLOUDINARY_API_SECRET: string | undefined,
     AdminEmail: string | undefined,
-    AdminPassword:string | undefined,
+    AdminPassword: string | undefined,
+    API_KEY: string | undefined,
 
 
 }
@@ -29,6 +30,7 @@ const config: ICONFIG = {
     CLOUDINARY_API_SECRET,
     AdminPassword,
     AdminEmail,
+    API_KEY,
 }
 
 export default config;

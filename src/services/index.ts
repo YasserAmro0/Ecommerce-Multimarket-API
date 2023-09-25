@@ -3,6 +3,7 @@ import { AddProduct, GetProduct, uploadImage, getProductById } from './product';
 import { addToCart, getAllCart, deleteFromCart } from './cart';
 import { addReviews, getAllReviewsForProduct, updateComment, deleteReview } from "./reviews";
 import { getAllReviews, deleteReviewAdmin, getProductsAdmin, deleteProductAdmin, updateProductAdmin } from './admin';
+import getClientSecret from './payment';
 export {
     Login, registerUser,
     AddProduct, GetProduct,
@@ -11,5 +12,6 @@ export {
     addReviews, getAllReviewsForProduct,
     deleteFromCart, updateComment, deleteReview,
     getAllReviews, deleteReviewAdmin,
-    getProductsAdmin, deleteProductAdmin, updateProductAdmin
+    getProductsAdmin, deleteProductAdmin, updateProductAdmin,
+    getClientSecret
 };

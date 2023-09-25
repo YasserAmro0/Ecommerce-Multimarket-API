@@ -9,7 +9,6 @@ const registerUser = async ({
     username,password,email
 }: IUser) => {
     const userExist = await User.findOne({ email });
-    console.log(userExist);
     if (userExist) {
         throw templateErrors.BAD_REQUEST('User already exists. Please login instead.');
     }
