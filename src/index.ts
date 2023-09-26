@@ -2,13 +2,22 @@ import { log } from 'console';
 import app from './app';
 import config from './config';
 import mongoose from 'mongoose';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
-const url = config.DB_URL;
+const uri = config.DB_URL;
+
+const client = new MongoClient(uri, {
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
+});
 
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect(url);
+        await client.connect();
         app.listen(config.PORT, () => {
             log('connected with DB...')
             log(`Listening on http://localhost:${config.PORT}`);
