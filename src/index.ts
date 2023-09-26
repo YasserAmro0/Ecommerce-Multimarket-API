@@ -3,12 +3,12 @@ import app from './app';
 import config from './config';
 import mongoose from 'mongoose';
 
-const uri = 'mongodb://127.0.0.1:27017/MultiMarket';
+const url = config.DB_URL;
 
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect(uri);
+        await mongoose.connect(url);
         app.listen(config.PORT, () => {
             log('connected with DB...')
             log(`Listening on http://localhost:${config.PORT}`);
