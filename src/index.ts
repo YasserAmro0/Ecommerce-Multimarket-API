@@ -2,31 +2,20 @@ import { log } from 'console';
 import app from './app';
 import config from './config';
 import mongoose from 'mongoose';
-import { MongoClient, ServerApiVersion } from 'mongodb';
 
 const uri = config.DB_URL;
 
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-
 async function connectToDatabase() {
     try {
-        await client.connect();
+        await mongoose.connect(uri);
         app.listen(config.PORT, () => {
-            log('connected with DB...')
+            log('Connected with DB...');
             log(`Listening on http://localhost:${config.PORT}`);
-        })
+        });
     } catch (error) {
         console.error('Error connecting to the database:', error);
-        process.exit(1)
+        process.exit(1);
     }
 }
-connectToDatabase();
 
-  
+connectToDatabase();
