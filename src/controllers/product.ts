@@ -28,6 +28,9 @@ const getProductController = async (req: Request, res: Response, next: NextFunct
         
 
         const products = await GetProduct(filterCategory as string, q as string, parsedMinPrice, parsedMaxPrice);
+        if (!products) {
+            return [];
+        }
         return res.status(201).json({ message: 'get Product successfully', data:  products });
     } catch (error) {
         next(error);
