@@ -1,7 +1,11 @@
 import { Types } from 'mongoose';
+import { Request } from 'express';
+
 
 interface Decode {
-    userId?: Types.ObjectId;
+    userId: Types.ObjectId ;
+    isAdmin?: boolean;
+   
 }
 
 interface IUser {
@@ -11,6 +15,14 @@ interface IUser {
     email: string;
 }
 
+
+interface RequestWithUserRole extends Request {
+    token?: string;
+    user?: Decode;
+
+}
+
+
 export {
-    Decode, IUser
+    Decode, IUser, RequestWithUserRole
 };

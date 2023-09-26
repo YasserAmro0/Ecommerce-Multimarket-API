@@ -4,11 +4,15 @@ import { addToCart, deleteFromCart, getAllCart } from "../services";
 import mongoose, { Types } from "mongoose";
 
 const addToCartController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const userData = req.user;
-    const { productId }: {productId : Types.ObjectId} = req.params;
+    const userId = req.user?.userId;
+    const userIdAsObjectId = new Types.ObjectId(userId);
+
+    const { productId } = req.params;
+    const ObjectIdproductId = new mongoose.Types.ObjectId(productId);
+
     const { quantity } = req.body;
     try {
-     await addToCart(userData?.userId, productId , quantity);
+        await addToCart(userIdAsObjectId, ObjectIdproductId , quantity);
      return res.status(201).json({ message: "Item added to cart successfully" });
     } catch (error) { 
         next(error);
@@ -17,9 +21,10 @@ const addToCartController = async (req: RequestWithUserRole, res: Response, next
 }
 
 const getAllProductsInCart = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const userData = req.user;
+    const userId = req.user?.userId;
+    const userIdAsObjectId = new Types.ObjectId(userId);
     try {
-        const products = await getAllCart(userData.userId);
+        const products = await getAllCart(userIdAsObjectId);
         return res.status(201).json({ message: "get all Product in Cart successfully", data: products });
 
     } catch (error) {
@@ -29,11 +34,13 @@ const getAllProductsInCart = async (req: RequestWithUserRole, res: Response, nex
 }
 
 const deleteFromCartController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const userData = req.user;
-    const { productId }: { productId: Types.ObjectId } = req.params;
+    const userId = req.user?.userId;
+    const userIdAsObjectId = new Types.ObjectId(userId);
 
+    const { productId } = req.params;
+    const ObjectIdproductId = new mongoose.Types.ObjectId(productId);
     try {
-        const dataAfterDelete = await deleteFromCart(userData.userId, productId);
+        const dataAfterDelete = await deleteFromCart(userIdAsObjectId, ObjectIdproductId);
         return res.status(201).json({ message: "delete Product in Cart successfully", data: dataAfterDelete });
 
     } catch (error) {

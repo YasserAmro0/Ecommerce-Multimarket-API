@@ -62,7 +62,7 @@ const getAuth = async (req: RequestWithUserRole, res: Response, next: NextFuncti
     let data;
     const user = req.user;
     try {
-        const userData = await User.findById(user.userId).select("username _id");
+        const userData = await User.findById(user?.userId).select("username _id");
         data = userData;
         res.json({
             message: 'success',

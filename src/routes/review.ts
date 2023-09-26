@@ -5,7 +5,7 @@ const router = Router();
 
 router.post('/addreview/:productId', checkToken, addReviewsController);
 router.get('/:productId', getReviewsController);
-router.put('/:idReview', checkToken, updateCommentController);
+router.put('/:reviewId', checkToken, updateCommentController);
 router.delete('/:idReview',deleteReviewController);
 
 export default router;

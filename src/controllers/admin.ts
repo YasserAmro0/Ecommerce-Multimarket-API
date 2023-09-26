@@ -1,9 +1,9 @@
 import { NextFunction, Response, Request } from "express";
 import * as yup from 'yup';
 import { deleteProductAdmin, deleteReviewAdmin, getAllReviews, getProductsAdmin, updateProductAdmin } from "../services";
-import { Types } from "mongoose";
-import { RequestWithUserRole } from "../types";
+import mongoose, { Types } from "mongoose";
 import { productSchema, templateErrors } from "../helpers";
+
 
 const getAllReviewsController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -15,10 +15,11 @@ const getAllReviewsController = async (req: Request, res: Response, next: NextFu
     
 }
 
-const deleteReviewAdminController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
+const deleteReviewAdminController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { reviewId }: { reviewId: Types.ObjectId } = req.params;
-       const removed = await deleteReviewAdmin(reviewId);
+        const { reviewId } = req.params;
+        const ObjectIdReviewId = new mongoose.Types.ObjectId(reviewId);
+        const removed = await deleteReviewAdmin(ObjectIdReviewId);
         return res.status(201).json({ message: 'delete review done ✔', data: removed });
     } catch (error) {
         next(error);
@@ -35,10 +36,12 @@ const getProductAdminController = async (req: Request, res: Response, next: Next
     }
 }
 
-const deleteProductAdminController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
+const deleteProductAdminController = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { productId }: { productId: Types.ObjectId } = req.params;
-        const removed = await deleteProductAdmin(productId);
+        const { productId } = req.params;
+        const ObjectIdproductId = new mongoose.Types.ObjectId(productId);
+
+        const removed = await deleteProductAdmin(ObjectIdproductId);
         return res.status(201).json({ message: 'delete Product done ✔', data: removed });
         
     } catch (error) {
@@ -46,17 +49,19 @@ const deleteProductAdminController = async (req: RequestWithUserRole, res: Respo
     }
 }
 
-const updateProductAdminController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
+const updateProductAdminController = async (req: Request, res: Response, next: NextFunction) => {
     const {
         title,
         price, category,
         description, shortDescription,
         imageurl } = req.body;
-    const { productId }: { productId: Types.ObjectId } = req.params;
+    const { productId } = req.params;
+    const ObjectIdproductId = new mongoose.Types.ObjectId(productId);
+
     try {
         await productSchema.validate({ title, price, category, description, shortDescription, imageurl });
        const afterUpdate= await updateProductAdmin(
-            productId, title,
+           ObjectIdproductId, title,
             price, category,
             description, shortDescription,
             imageurl);
