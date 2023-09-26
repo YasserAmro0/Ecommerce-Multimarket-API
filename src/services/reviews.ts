@@ -55,7 +55,6 @@ const getAllReviewsForProduct = async (productId:Types.ObjectId) => {
 
 const updateComment = async (userId: string, idReview: Types.ObjectId, newComment: string) => {
     
-    console.log(userId, 'userId');
     const review = await Reviews.findById(idReview);
 
     if (!review) {

@@ -1,19 +1,23 @@
 import { NextFunction, Response, Request } from "express";
 import * as yup from 'yup';
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { RequestWithUserRole } from "../types";
 import { reviewsSchema, templateErrors } from "../helpers";
 import { addReviews, deleteReview, getAllReviewsForProduct, updateComment } from "../services";
 
 
 const addReviewsController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const userData = req.user;
-    const { productId }: { productId: Types.ObjectId } = req.params;
+    const userId = req.user?.userId;
+    const userIdAsObjectId = new Types.ObjectId(userId);
+    
+    const { productId } = req.params;
+    const ObjectIdproductId = new Types.ObjectId(productId);
+
     const { comment, rating } = req.body;
 
     try {
         await reviewsSchema.validate({ comment, rating });
-        const reviews = await addReviews(userData?.userId, productId, comment, rating);
+        const reviews = await addReviews(userIdAsObjectId, ObjectIdproductId, comment, rating);
         return res.status(201).json({ message: 'add review successfully', data: reviews });
     } catch (err) {
         if (err instanceof yup.ValidationError) {
@@ -26,9 +30,10 @@ const addReviewsController = async (req: RequestWithUserRole, res: Response, nex
 
 
 const getReviewsController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const { productId }: { productId: Types.ObjectId } = req.params;
+    const { productId } = req.params;
+    const ObjectIdproductId = new Types.ObjectId(productId);
     try {
-        const reviews = await getAllReviewsForProduct(productId);
+        const reviews = await getAllReviewsForProduct(ObjectIdproductId);
         return res.status(201).json({ message: 'get reviews successfully', data: reviews });
     } catch (error) {
         next(error);
@@ -37,11 +42,14 @@ const getReviewsController = async (req: RequestWithUserRole, res: Response, nex
 } 
 
 const updateCommentController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const userData = req.user; 
-    const { idReview }: { idReview: Types.ObjectId } = req.params;
+    const userId = req.user?.userId;
+    const userIdAsObjectId = new Types.ObjectId(userId);
+
+    const { idReview } = req.params;
+    const ObjectIdproductId = new Types.ObjectId(idReview);
     const { newComment } = req.body;
     try {
-        const reviewAfterUpdate = await updateComment(userData.userId, idReview, newComment);
+        const reviewAfterUpdate = await updateComment(userIdAsObjectId.toString(), ObjectIdproductId, newComment);
         return  res.status(201).json({ message:'update comment successfully ',data :reviewAfterUpdate});
         
     } catch (error) {
@@ -50,9 +58,10 @@ const updateCommentController = async (req: RequestWithUserRole, res: Response, 
 }
 
 const deleteReviewController = async (req: RequestWithUserRole, res: Response, next: NextFunction) => {
-    const { idReview }: { idReview: Types.ObjectId } = req.params;
+    const { idReview } = req.params;
+    const ObjectIdproductId = new Types.ObjectId(idReview);
     try {
-        await deleteReview(idReview);
+        await deleteReview(ObjectIdproductId);
         return res.status(201).json({ message: 'delete review successfully '});
 
       
