@@ -27,7 +27,7 @@ const Signup = async (req: Request, res: Response, next: NextFunction) => {
 
 
 // Login user and Admin
-const LoginUserAdmin = async (req: Request, res: Response, next: NextFunction) => { 
+const LoginUser = async (req: Request, res: Response, next: NextFunction) => { 
   
     try {
         const { email, password } = req.body;
@@ -96,4 +96,4 @@ const LoginAdmin = async (req: Request, res: Response, next: NextFunction) => {
 
     
 }
-export { Signup, LoginUserAdmin, getAuth, LoginAdmin };
+export { Signup, LoginUser, getAuth, LoginAdmin };

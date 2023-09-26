@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { Signup, LoginUserAdmin, LoginAdmin, getAuth  } from '../controllers';
+import { Signup, LoginUser, LoginAdmin, getAuth  } from '../controllers';
 import { checkToken } from '../middlewares';
 
 const router = Router();
 
 router.post('/signup', Signup);
-router.post('/login',LoginUserAdmin);
+router.post('/login', LoginUser);
 router.get('/', checkToken, getAuth);
 router.post('/login/admin', LoginAdmin);
 
